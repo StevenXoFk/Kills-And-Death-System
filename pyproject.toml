@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "endstone-kills-deaths-system"
+version = "0.1.0"
+dependencies = []
+description = "Kills and Deaths system lol"
+
+[project.entry-points."endstone"]
+"kills-deaths-system" = "endstone_kills_deaths_system:MyPlugin"
