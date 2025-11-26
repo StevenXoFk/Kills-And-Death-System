@@ -1,24 +1,17 @@
 from endstone.plugin import Plugin
 from endstone.event import event_handler, PlayerDeathEvent, PlayerJoinEvent
 from endstone import ColorFormat, Player
+from endstone.command import Command, CommandSender
 from pathlib import Path
 import json
 
 class MyPlugin(Plugin):
-
-    def on_enable(self):
-        self.logger.info(f'{ColorFormat.GREEN}El Plugin se cargo correctamente')
-        self.players_folder = self.data_folder / "players"
-        self.players_folder.mkdir(parents=True, exist_ok=True)
-
-        self.register_events(self)
-    def on_disable(self):
-        self.logger.info(f'${ColorFormat.RED}El plugin se cerro correctamente')
+    api_version = "0.10"
 
     commands = {
         "stats": {
             "description": "View a player's statistics",
-            "usage": ["/stats [player: target]"],
+            "usage": ["/stats [player: str]"],
             "permissions": ["my_plugin.command.stats"]
         }
     }
@@ -29,10 +22,16 @@ class MyPlugin(Plugin):
             "default": True,
         }
     }
+    def on_enable(self):
+        self.logger.info(f'{ColorFormat.GREEN}El Plugin se cargo correctamente')
+        self.players_folder = self.data_folder / "players"
+        self.players_folder.mkdir(parents=True, exist_ok=True)
 
-    def on_command(self, sender, command, args):
-        player = self.server.get_player(sender.name)
+        self.register_events(self)
+    def on_disable(self):
+        self.logger.info(f'${ColorFormat.RED}El plugin se cerro correctamente')
 
+    def on_command(self, sender: CommandSender, command: Command, args: list[str]):
         if (command.name == "stats"):
             if not isinstance(sender, Player):
                 sender.send_error_message(ColorFormat.RED + "This command is only used on players")
