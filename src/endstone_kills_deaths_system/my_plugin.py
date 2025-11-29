@@ -11,7 +11,7 @@ class MyPlugin(Plugin):
     commands = {
         "stats": {
             "description": "View a player's statistics",
-            "usage": ["/stats [player: str]"],
+            "usages": ["/stats [player: player]"],
             "permissions": ["my_plugin.command.stats"]
         }
     }
@@ -31,7 +31,7 @@ class MyPlugin(Plugin):
     def on_disable(self):
         self.logger.info(f'${ColorFormat.RED}El plugin se cerro correctamente')
 
-    def on_command(self, sender: CommandSender, command: Command, args: list[str]):
+    def on_command(self, sender: CommandSender, command: Command, args: list[str]) -> bool:
         if (command.name == "stats"):
             if not isinstance(sender, Player):
                 sender.send_error_message(ColorFormat.RED + "This command is only used on players")
